@@ -9,7 +9,7 @@ const SideMenu = (props) => {
     let {pathname} = useLocation()
     const path = `/${pathname.split('/')[1]}`
     pathname=pathname==='/'?'/home':pathname
-
+    pathname=pathname==='/bannermanager/addimg'?'/bannermanager/list':pathname
     
     const rootSubmenuKeys = menu.map(item=>(item.path))
     const [openKeys, setOpenKeys] = useState([path]);
@@ -45,7 +45,7 @@ const SideMenu = (props) => {
                                         return renderMenu(item.children)
                                     }
                                     else{
-                                        return (<Menu.Item  key={value.path} icon={value.icon} >
+                                        return value.meta&&value.meta.hidden?'':(<Menu.Item  key={value.path} icon={value.icon} >
                                             <NavLink to={value.path}>{value.title}</NavLink>                                          >
                                         </Menu.Item>)
                                     }

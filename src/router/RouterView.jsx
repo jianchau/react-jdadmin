@@ -12,11 +12,11 @@ const RouterView = () => {
           renderRouter(item.children)
         }  
         else {
-          arr.push(<Route
-            path={ item.path }
-            key={item.path}
-            exact
-            component = { item.component } />)
+            arr.push(<Route
+              path={ item.path }
+              key={item.path}
+              exact
+              component = { item.component } />)
         }
       })
     return arr

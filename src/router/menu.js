@@ -31,6 +31,15 @@ const menu = [
                 title:'轮播图列表',
                 icon:<UnorderedListOutlined />,
                 component:lazy(() =>import('./../views/banner/Index'))
+            },
+            {
+                path:'/bannermanager/addimg',
+                title:'添加轮播图',
+                icon:<SafetyCertificateOutlined />,
+                component:lazy(()=>import('../views/banner/AddImg')),
+                meta:{
+                    hidden:true
+                }
             }
         ]
     },
