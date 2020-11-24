@@ -6,5 +6,13 @@ export function addBanner(params){
 export function getBanner(){
     return request.get('/banner')
 }
+export function removeBanner(params){
+    return request.post('/banner/remove',params)
+}
+export function removeAllBanner(params){
+    return request.post('/banner/removeall',params)
+}
+
+
 
 

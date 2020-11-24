@@ -1,11 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import { Table,Button,Popconfirm} from 'antd';
+import {getBanner,removeBanner,removeAllBanner} from '../../api/banner'
 
-import {getBanner} from '../../api/banner'
 function BannerList() {
+    const history = useHistory();
     const [data,setData]=useState([])
-    const [selectedRowKeys,setSelectedRowKeys]=useState({})
+    const [selectedArr,setSelectedArr]=useState([])
+    const [flag,setFlag] = useState(false)
+
     useEffect(()=>{
         getBanner().then(res=>{
             setData(res.data.data)
@@ -14,8 +17,39 @@ function BannerList() {
     const cancel=()=>{
 
     }
-    const confirm = ()=>{
-        console.log(111)
+    const confirm = (bannerid)=>{
+        return ()=>{
+            removeBanner({bannerid}).then(res=>{
+                if(res.data.code===200){
+                    getBanner().then(res=>{
+                        setData(res.data.data)
+                    })
+                }
+            })
+        }
+    }
+    const onSelectChange = selectedRowKeys => {
+        selectedRowKeys.length>0?setFlag(true):setFlag(false)
+        setSelectedArr(selectedRowKeys)
+    }
+    const rowSelection = {
+        onChange: onSelectChange,
+    }
+    const clickHandler = ()=>{
+       history.push('/bannermanager/addimg')
+    }
+    const onDeleteMany = (selectedArr)=>{
+        return ()=>{
+            removeAllBanner({deleteArr:selectedArr}).then(res=>{
+                if(res.data.code===200){
+                    rowSelection.selectedRowKeys=[]
+                    getBanner().then(res=>{
+                        setData(res.data.data)
+                        setFlag(false)
+                    })
+                }
+            })
+        }
     }
     const columns = [
         {
@@ -45,46 +79,40 @@ function BannerList() {
             width:100,
             title:'操作',
             key:'operation',
-            render:()=>
-                <Popconfirm
-                title="你确定要删除吗"
-                onConfirm={confirm}
-                onCancel={cancel}
-                okText="确定"
-                cancelText="取消"
-                >
-                    <span style={{cursor:'pointer'}}>删除</span>
-                </Popconfirm>,
+            render:(text,record,index)=>
+            <Popconfirm
+            title="你确定要删除吗"
+            onConfirm={confirm(record.bannerid)}
+            onCancel={cancel}
+            okText="确定"
+            cancelText="取消"
+            >
+                <span style={{cursor:'pointer'}}>删除</span>
+            </Popconfirm>,
         }
     ]
-    const onSelectChange = selectedRowKeys => {
-        // console.log('selectedRowKeys changed: ', selectedRowKeys);
-        // setSelectedRowKeys({ selectedRowKeys });
-    }
-    const rowSelection = {
-        // selectedRowKeys,
-        // onChange: onSelectChange,
-    }
-
-    const history = useHistory();
-    const clickHandler = ()=>{
-       history.push('/bannermanager/addimg')
-    }
+    
     return (
         <>
             <Button 
             type="primary"
             onClick={clickHandler}
             >添加轮播图</Button>
+            {flag?
+            <Button 
+            type='primary'
+            onClick={onDeleteMany(selectedArr)}
+            >批量删除</Button>:''
+            }
             <Table 
             size='small'
             bordered
+            pagination={{position:['bottomLeft']}}
             scroll={{y:350}}
             columns={columns} 
             dataSource={data} 
             rowKey={record=>record.bannerid} 
             rowSelection={rowSelection}
-
             />
         </>
     )

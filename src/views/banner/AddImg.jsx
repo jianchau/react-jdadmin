@@ -26,7 +26,6 @@ const AddBanner = (props) => {
     })
   };
   const normFile = (e) => {
-    console.log('Upload event:', e);
     setUrl(e.fileList[0].thumbUrl)
     if (Array.isArray(e)) {
       return e;
