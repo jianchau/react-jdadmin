@@ -25,11 +25,12 @@ const RouterView = () => {
   return (
     <Suspense fallback={<div className="spinpo"><Spin size="large" /></div>}>
         <Switch>
+            <Redirect path="/" exact to="/home" />
             {
               renderRouter(menu)             
             },
             <RedirectRouter /> 
-            <Redirect path="/" to="/home" /> 
+             
             
         </Switch> 
     </Suspense>

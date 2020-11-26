@@ -6,14 +6,14 @@ import {
     MenuFoldOutlined,
   } from '@ant-design/icons'
 import BreadCrumb from './BreadCrumb'
-import actionCreators from '../store/actionCreator'
+import {toggle} from '../store/actionCreator'
 const {Header} = Layout
 
 const mapStateToProps = state=>({
     collapsed:state.collapsed
 })
 
-const mapDispatchToProps=actionCreators
+const mapDispatchToProps={toggle}
 
 function MainHeader(props) {
     const toggleColla = ()=>{

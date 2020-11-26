@@ -1,22 +1,23 @@
 import React,{useState, useEffect} from 'react'
 import {NavLink,withRouter,useLocation} from 'react-router-dom'
 import {Menu} from 'antd'
+import {connect} from 'react-redux'
+import {addCurrentPath} from '../store/actionCreator'
 import menu from '../router/menu'
 const {SubMenu} = Menu
-
-
 const SideMenu = (props) => {
     let {pathname} = useLocation()
     const path = `/${pathname.split('/')[1]}`
     pathname=pathname==='/'?'/home':pathname
     pathname=pathname==='/bannermanager/addimg'?'/bannermanager/list':pathname
-    
+    console.log(path)
     const rootSubmenuKeys = menu.map(item=>(item.path))
     const [openKeys, setOpenKeys] = useState([path]);
     const [selectedKeys,setSelectedKeys] = useState([pathname])
     useEffect(()=>{
+        setOpenKeys([path])
         setSelectedKeys([pathname])
-    },[pathname])
+    },[pathname,path])
     const onOpenChange = keys => {
         //设置单开
         const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
@@ -26,13 +27,12 @@ const SideMenu = (props) => {
           setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
         //设置selectedKeys保持住选中状态
-       
     };
     const clickHandler = ({ key })=>{
+        props.addCurrentPath(key)
         setSelectedKeys([key])
-       
-       
     }
+
     const renderMenu = (menu)=>{
         
         return menu.map((item,index)=>{
@@ -78,5 +78,8 @@ const SideMenu = (props) => {
             </Menu>
     )
 }
-
-export default withRouter(SideMenu) 
+const mapStateToProps = (state)=>({
+    currentPath:state.getIn(['common_reducer','currentPath'])
+})
+const mapDispatchToProps = {addCurrentPath}
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(SideMenu))

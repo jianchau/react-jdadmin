@@ -1,12 +1,13 @@
 import React from 'react'
 import { Layout} from 'antd'
 import {connect} from 'react-redux'
-import actionCreators  from '../store/actionCreator'
+import {toggle}  from '../store/actionCreator'
 import RouterView from '../router/RouterView'
 
 
 import SideMenu from '../components/SideMenu'
 import MainHeader from '../components/MainHeader'
+import Tags from '../components/Tags'
 import logo from '../logo.svg'
 import '../css/index.css'
 
@@ -16,7 +17,7 @@ const mapStateToProps = (state)=>(
     collapsed:state.getIn(['sider_reducer','collapsed'])
   }
 )
-const mapDispatchToProps = actionCreators
+const mapDispatchToProps = {toggle}
 
 @connect(mapStateToProps,mapDispatchToProps)
 class Home extends React.Component {
@@ -38,10 +39,14 @@ class Home extends React.Component {
             })}
           </Header> */}
           <MainHeader />
+          <div className="tagwrapper">
+            <Tags />
+          </div>
+          
           <Content
             className="site-layout-background"
             style={{
-              margin: '24px 16px',
+              margin: '5px 16px',
               padding: 24,
               minHeight: 280,
             }}

@@ -53,3 +53,26 @@ a{
   top:50%;
   transform:translateY(-50%);
 }
+
+.site-tag-plus {
+  background: #fff;
+  border-style: dashed;
+}
+.ant-tag{
+  margin: 5px 0 0 16px;
+  width:150px;
+  height:30px;
+  line-height: 30px;
+  text-align: center;
+}
+/* .edit-tag {
+  user-select: none;
+} */
+.tag-input {
+  width: 78px;
+  margin-right: 8px;
+  vertical-align: top;
+}
+.tagwrapper{
+
+}

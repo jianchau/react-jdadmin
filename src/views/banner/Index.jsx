@@ -8,10 +8,11 @@ function BannerList() {
     const [data,setData]=useState([])
     const [selectedArr,setSelectedArr]=useState([])
     const [flag,setFlag] = useState(false)
-
+    const [total,setTotal] = useState()
     useEffect(()=>{
         getBanner().then(res=>{
             setData(res.data.data)
+            setTotal(res.data.data.length)
         })
     },[])
     const cancel=()=>{
@@ -23,6 +24,7 @@ function BannerList() {
                 if(res.data.code===200){
                     getBanner().then(res=>{
                         setData(res.data.data)
+                        setTotal(res.data.data.length)
                     })
                 }
             })
@@ -45,6 +47,7 @@ function BannerList() {
                     rowSelection.selectedRowKeys=[]
                     getBanner().then(res=>{
                         setData(res.data.data)
+                        setTotal(res.data.data.length)
                         setFlag(false)
                     })
                 }
@@ -107,7 +110,13 @@ function BannerList() {
             <Table 
             size='small'
             bordered
-            pagination={{position:['bottomLeft']}}
+            pagination={{
+                position:['bottomLeft'],
+                total:total,
+                pageSizeOptions:['5','10','20'],
+                showTotal:(total,range)=>`共有${total}条数据`,
+                showSizeChanger:true,
+            }}
             scroll={{y:350}}
             columns={columns} 
             dataSource={data} 
